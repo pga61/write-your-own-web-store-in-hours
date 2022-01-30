@@ -19,7 +19,7 @@ And you'll be redirected to the home page again. Now check the [list of successf
 
 # 🕵️ What's missing?
 
-This workshop has given you the basics to understand how to use Auth0 Actions to provide additional glue to connect your usres with other third-party systems, like Stripe. It is designed to give you a comprehension of the possibilities, but it not intended to be production ready code.
+This workshop has given you the basics to understand how to use Auth0 Actions to provide additional glue to connect your users with other third-party systems, like Stripe. It is designed to give you a comprehension of the possibilities, but it not intended to be production ready code.
 
 There are places where error handling could have been added. Just for example, when the `buy` endpoint is called, we don't handle issues where the access token doesn't contain a `stripe_customer_id`. Also, we're not locking API function calls to their expected HTTP Methods. There are many options for improving the resillience of this code, which I'll leave for you to discover.
 
@@ -30,9 +30,9 @@ There are places where error handling could have been added. Just for example, w
 If you'd like to add a JWT viewer to this app, so you can see what's coming back from Auth0 in both the ID Token and the Access Token,
 
 ```javascript
-import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { decode } from "js-base64";
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { decode } from 'js-base64';
 
 const Profile = () => {
   const { isLoading, user, getAccessTokenSilently } = useAuth0();
@@ -40,7 +40,7 @@ const Profile = () => {
 
   useEffect(() => {
     getAccessTokenSilently().then((token) => {
-      const [header, payload, signature] = token.split(".");
+      const [header, payload, signature] = token.split('.');
       setAccessToken(JSON.parse(decode(payload)));
     });
   }, [setAccessToken]);
