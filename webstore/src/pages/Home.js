@@ -2,9 +2,39 @@ import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const BuyNowButton = ({ product }) => {
-  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+  } = useAuth0();
 
-  const buy = () => {};
+  const buy = async () => {
+    // We need an access token for our API to get the
+    // Stripe Customer ID from
+    const access_token = await getAccessTokenSilently();
+    console.log('access_token :>> ', access_token);
+
+    // Call the API endpoint, passing in the access token
+    // as a header, and the Price ID as the payload
+    fetch('/.netlify/functions/buy', {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${access_token}`,
+      },
+      body: JSON.stringify({
+        priceId: product.prices[0].id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        // The response is a checkout session object,
+        // which has a `url` attribute which we simply
+        // redirect the user to
+        console.log('json :>> ', json);
+        window.location.assign(json.url);
+      });
+  };
 
   if (isLoading) return <></>;
 
